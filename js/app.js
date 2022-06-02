@@ -45,16 +45,39 @@ function render() {
   } else if (winner === 'T') {
     messageEl.textContent = "It's a tie!"
   } else {
-    messageEl.textContent = `Congratulations ${winner}'s, you win!`
+    messageEl.textContent = `Congratulations! Player ${winner} wins!`
   }
 }
 
 function handleClick(evt) {
-  const sqIdx = getSquareId(evt)
-  function getSquareId(square) {
-    return parseInt(square.target.id.substring(2))
+  if (winner === null) {
+    const sqIdx = getSquareId(evt)
+    function getSquareId(square) {
+      return parseInt(square.target.id.substring(2))
+    }
+    if (turn === 1 && board[sqIdx] === null) board[sqIdx] = turn, turn *= -1
+    else if (turn === -1 && board[sqIdx] === null) board[sqIdx] = turn, turn *= -1
+    getWinner()
+    render()
   }
-  if (turn === 1 && board[sqIdx] === null) board[sqIdx] = 1, turn = (turn === 1) ? -1 : 1
-  else if (turn === -1 && board[sqIdx] === null) board[sqIdx] = -1, turn = (turn === 1) ? -1 : 1
-  render()
 }
+
+function getWinner() {
+  winningCombos.forEach(winningCombo => {
+    const firstSquare = winningCombo[0]
+    const secondSquare = winningCombo[1]
+    const thirdSquare = winningCombo[2]
+    let sum = board[firstSquare] + board[secondSquare] + board[thirdSquare]
+    if (sum === 3) winner = 'X'
+    else if (sum === -3) winner = 'O'
+    else if (board.every(isTaken) && board.some(isNull) === false) winner = 'T'
+  })
+  function isTaken(element) {
+    if (element === 1 || element === -1) return true
+  }
+
+  function isNull(element) {
+    if (element === null) return true
+  }
+}
+
