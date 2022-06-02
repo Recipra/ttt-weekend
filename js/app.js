@@ -14,21 +14,22 @@ const messageEl = document.getElementById('message')
 
 
 /*----------------------------- Event Listeners -----------------------------*/
-
-
+squareEls.forEach(square => {
+  square.addEventListener('click', event => {
+    handleClick(event)
+  })
+})
 
 /*-------------------------------- Functions --------------------------------*/
 init()
 // render()
 
 function init() {
-  board = [1, null, -1, null, null, 1, null, null, null]
+  board = [null, null, null, null, null, null, null, null, null]
   turn = 1
   winner = null
   render()
 }
-// turn = (turn === 1) ? -1 : 1
-// console.log(turn)
 
 function render() {
   board.forEach((square, index) => {
@@ -46,4 +47,14 @@ function render() {
   } else {
     messageEl.textContent = `Congratulations ${winner}'s, you win!`
   }
+}
+
+function handleClick(evt) {
+  const sqIdx = getSquareId(evt)
+  function getSquareId(square) {
+    return parseInt(square.target.id.substring(2))
+  }
+  if (turn === 1 && board[sqIdx] === null) board[sqIdx] = 1, turn = (turn === 1) ? -1 : 1
+  else if (turn === -1 && board[sqIdx] === null) board[sqIdx] = -1, turn = (turn === 1) ? -1 : 1
+  render()
 }
