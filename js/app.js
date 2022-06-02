@@ -11,7 +11,7 @@ let board, turn, winner
 /*------------------------ Cached Element References ------------------------*/
 const squareEls = document.querySelectorAll('.board-squares')
 const messageEl = document.getElementById('message')
-
+const resetBtnEl = document.getElementById('resetButton')
 
 /*----------------------------- Event Listeners -----------------------------*/
 squareEls.forEach(square => {
@@ -20,9 +20,10 @@ squareEls.forEach(square => {
   })
 })
 
+resetBtnEl.addEventListener('click', init)
+
 /*-------------------------------- Functions --------------------------------*/
 init()
-// render()
 
 function init() {
   board = [null, null, null, null, null, null, null, null, null]
@@ -35,6 +36,7 @@ function render() {
   board.forEach((square, index) => {
     if (square === 1) squareEls[index].textContent = 'X'
     else if (square === -1) squareEls[index].textContent = 'O'
+    else squareEls[index].textContent = ''
   });
   if (winner === null) {
     if (turn === 1) {
