@@ -59,27 +59,24 @@ function handleClick(evt) {
     }
     if (turn === 1 && board[sqIdx] === null) board[sqIdx] = turn, turn *= -1
     else if (turn === -1 && board[sqIdx] === null) board[sqIdx] = turn, turn *= -1
-    getWinner()
+    winner = getWinner()
     render()
   }
 }
 
 function getWinner() {
-  winningCombos.forEach(winningCombo => {
-    const firstSquare = winningCombo[0]
-    const secondSquare = winningCombo[1]
-    const thirdSquare = winningCombo[2]
+  for (let i = 0; i < winningCombos.length; i++) {
+    const firstSquare = winningCombos[i][0]
+    const secondSquare = winningCombos[i][1]
+    const thirdSquare = winningCombos[i][2]
     let sum = board[firstSquare] + board[secondSquare] + board[thirdSquare]
-    if (sum === 3) winner = 'X'
-    else if (sum === -3) winner = 'O'
-    else if (board.every(isTaken) && board.some(isNull) === false) winner = 'T'
-  })
-  function isTaken(element) {
-    if (element === 1 || element === -1) return true
+    if (sum === 3) {
+      return 'X'
+    }
+    else if (sum === -3) {
+      return 'O'
+    }
   }
-
-  function isNull(element) {
-    if (element === null) return true
-  }
+  if (!board.includes(null)) return 'T'
+  return null
 }
-
